@@ -1,8 +1,6 @@
 name: Docker Compose and Playwright Tests
 
 on:
-  push:
-  workflow_dispatch:
   workflow_call:
     inputs:
       python-version:
@@ -28,24 +26,26 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout External Repository
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ inputs.python-version }}
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r "Playwright/requirements.txt"
+          pip install -r requirements.txt
 
-      - name: Ensure browsers are installed
+      - name: Ensure Browsers Are Installed
         run: python -m playwright install --with-deps
 
       - name: Set PYTHONPATH
-        run: echo "PYTHONPATH=$PWD:$PYTHONPATH" >> $GITHUB_ENV
+        run: |
+          echo "PYTHONPATH=$PWD:$PYTHONPATH" >> $GITHUB_ENV
+          source $GITHUB_ENV
 
       - name: Run Playwright Tests
         run: python ${{ inputs.test-script }}
