@@ -3,7 +3,6 @@ name: Docker Compose and Playwright Tests
 on:
   workflow_call:
 
-
     secrets:
       BACKEND_PORT:
         required: true
@@ -17,13 +16,10 @@ jobs:
       BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
       FRONTEND_PORT: ${{ secrets.FRONTEND_PORT }}
     steps:
-
-
       - name: Run Playwright Tests
         env:
           PYTHONPATH: ${{ env.PYTHONPATH }}
-          # DJANGO_SETTINGS_MODULE: Backend.controller.main_frame_project.settings
-          DJANGO_ALLOW_ASYNC_UNSAFE: 1 
+
           
         run: |
           python "Playwright/run_tests.py"
