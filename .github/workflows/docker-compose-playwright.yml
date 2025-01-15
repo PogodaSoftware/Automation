@@ -30,6 +30,7 @@ jobs:
           BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
           FRONTEND_PORT: ${{ secrets.FRONTEND_PORT }}
         run: |
+          docker ps -a
           python ${{ inputs.test-script }}
 
       
