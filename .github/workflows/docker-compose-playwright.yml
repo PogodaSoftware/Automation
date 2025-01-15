@@ -1,14 +1,15 @@
 name: Docker Compose and Playwright Tests
 
+
 on:
-  push:
+  workflow_call:
     inputs:
       python-version:
         description: "Python version to use"
         default: "3.11"
         type: string
       test-script:
-        description: "Path to the Playwright test script"
+        description: "Path to the Playwright test script in the external repository"
         default: "Playwright/run_tests.py"
         type: string
     secrets:
