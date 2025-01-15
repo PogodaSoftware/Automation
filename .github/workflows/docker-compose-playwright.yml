@@ -13,7 +13,9 @@ on:
         type: string
 
 
-
+env: 
+      BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
+      FRONTEND_PORT: ${{ secrets.FRONTEND_PORT }}
 
 jobs:
   test:
@@ -21,7 +23,7 @@ jobs:
     steps:
       - name: Set PYTHONPATH
         run: echo "PYTHONPATH=$PWD:$PYTHONPATH" >> $GITHUB_ENV
-        
+
       - name: Run Playwright Tests
         env:
           PYTHONPATH: ${{ env.PYTHONPATH }}
