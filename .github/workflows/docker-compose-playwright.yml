@@ -35,6 +35,8 @@ jobs:
           
         run: |
           docker ps -a
+          ls
+          ls -la
           python ${{ inputs.test-script }}
 
       
