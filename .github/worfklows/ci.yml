@@ -1,16 +1,55 @@
-name: ci
+name: Docker Compose and Playwright Tests
 
-on: 
-  worfklow_dispatch:
-    push:
+on:
+  push:
+    inputs:
+      python-version:
+        description: "Python version to use"
+        default: "3.11"
+        type: string
+      test-script:
+        description: "Path to the Playwright test script"
+        default: "Playwright/run_tests.py"
+        type: string
+    secrets:
+      BACKEND_PORT:
+        required: true
+      FRONTEND_PORT:
+        required: true
 
 jobs:
-  playwright-with-python-run:
+  test:
     runs-on: ubuntu-latest
+    env: 
+      BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
+      FRONTEND_PORT: ${{ secrets.FRONTEND_PORT }}
+    timeout-minutes: 15
+
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run Playwright Tests
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Install dependencies
         run: |
-          python "Playwright/run_tests.py"
+          python -m pip install --upgrade pip
+          pip install -r "Playwright/requirements.txt"
+
+      - name: Ensure browsers are installed
+        run: python -m playwright install --with-deps
+
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$PWD:$PYTHONPATH" >> $GITHUB_ENV
+
+      - name: Run Playwright Tests
+        env:
+          PYTHONPATH: ${{ env.PYTHONPATH }}
+
+        run: |
+          python ${{ inputs.test-script }}
+
