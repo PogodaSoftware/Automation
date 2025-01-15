@@ -11,11 +11,12 @@ on:
         description: "Path to the Playwright test script"
         default: "Playwright/run_tests.py"
         type: string
-
-
-env: 
-      BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
-      FRONTEND_PORT: ${{ secrets.FRONTEND_PORT }}
+    
+    secrets:
+      BACKEND_PORT:
+        required: true
+      FRONTEND_PORT:
+        required: true
 
 jobs:
   test:
