@@ -7,11 +7,7 @@ on:
         description: "Python version to use"
         default: "3.11"
         type: string
-      test-script:
-        description: "Path to the Playwright test script"
-        default: "Playwright/run_tests.py"
-        type: string
-    
+
     secrets:
       BACKEND_PORT:
         required: true
@@ -34,9 +30,6 @@ jobs:
           DJANGO_ALLOW_ASYNC_UNSAFE: 1 
           
         run: |
-          docker ps -a
-          ls
-          ls -la
-          python ${{ inputs.test-script }}
+          python "Playwright/run_tests.py"
 
       
