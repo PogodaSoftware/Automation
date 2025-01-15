@@ -2,11 +2,7 @@ name: Docker Compose and Playwright Tests
 
 on:
   workflow_call:
-    inputs:
-      python-version:
-        description: "Python version to use"
-        default: "3.11"
-        type: string
+
 
     secrets:
       BACKEND_PORT:
@@ -22,7 +18,9 @@ jobs:
       FRONTEND_PORT: ${{ secrets.FRONTEND_PORT }}
     steps:
 
-
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$PWD:$PYTHONPATH" >> $GITHUB_ENV
+        
       - name: Run Playwright Tests
         env:
           PYTHONPATH: ${{ env.PYTHONPATH }}
