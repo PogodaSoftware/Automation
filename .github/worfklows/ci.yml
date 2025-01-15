@@ -1,0 +1,16 @@
+name: ci
+
+on: 
+  worfklow_dispatch:
+    push:
+
+jobs:
+  playwright-with-python-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Playwright Tests
+        run: |
+          python "Playwright/run_tests.py"
