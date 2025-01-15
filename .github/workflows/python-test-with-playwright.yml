@@ -1,10 +1,6 @@
-
-
 name: Docker Compose and Playwright Tests
 
 on:
-  push:
-  workflow_dispatch:
   workflow_call:
     inputs:
       python-version:
@@ -12,7 +8,7 @@ on:
         default: "3.11"
         type: string
       test-script:
-        description: "Path to the Playwright test script"
+        description: "Path to the Playwright test script in the external repository"
         default: "Playwright/run_tests.py"
         type: string
     secrets:
@@ -29,9 +25,8 @@ jobs:
       FRONTEND_PORT: ${{ secrets.FRONTEND_PORT }}
     timeout-minutes: 15
 
-
     steps:
-      - name: Checkout code
+      - name: Checkout External Repository
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -39,21 +34,18 @@ jobs:
         with:
           python-version: ${{ inputs.python-version }}
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r "Playwright/requirements.txt"
+          pip install -r requirements.txt
 
-      - name: Ensure browsers are installed
+      - name: Ensure Browsers Are Installed
         run: python -m playwright install --with-deps
 
       - name: Set PYTHONPATH
-        run: echo "PYTHONPATH=$PWD:$PYTHONPATH" >> $GITHUB_ENV
+        run: |
+          echo "PYTHONPATH=$PWD:$PYTHONPATH" >> $GITHUB_ENV
+          source $GITHUB_ENV
 
       - name: Run Playwright Tests
-        env:
-          PYTHONPATH: ${{ env.PYTHONPATH }}
-
-        run: |
-          python ${{ inputs.test-script }}
-
+        run: python ${{ inputs.test-script }}
