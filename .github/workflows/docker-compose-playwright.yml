@@ -1,6 +1,5 @@
 name: Docker Compose and Playwright Tests
 
-
 on:
   workflow_dispatch:
   workflow_call:
@@ -27,7 +26,6 @@ jobs:
       FRONTEND_PORT: ${{ secrets.FRONTEND_PORT }}
     timeout-minutes: 15
 
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -49,9 +47,4 @@ jobs:
         run: echo "PYTHONPATH=$PWD:$PYTHONPATH" >> $GITHUB_ENV
 
       - name: Run Playwright Tests
-        env:
-          PYTHONPATH: ${{ env.PYTHONPATH }}
-
-        run: |
-          python ${{ inputs.test-script }}
-
+        run: python ${{ inputs.test-script }}
