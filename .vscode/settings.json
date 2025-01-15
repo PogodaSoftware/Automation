@@ -1,6 +1,6 @@
 {
     "python.testing.pytestArgs": [
-        "Playwright"
+        "Playwright/steps"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true
