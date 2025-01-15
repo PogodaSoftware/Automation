@@ -1,0 +1,13 @@
+name: Run Tests with Reusable Workflow
+
+on: [push]
+
+jobs:
+  run-tests:
+    uses: ./.github/workflows/docker-compose-playwright.yml
+    with:
+      
+      test-script: "Playwright/run_tests.py"
+    secrets:
+      
+      FRONTEND_PORT: ${{ secrets.FRONTEND_PORT }}
