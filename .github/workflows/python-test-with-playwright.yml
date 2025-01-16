@@ -4,15 +4,19 @@ on:
   push:
   workflow_dispatch:
     inputs:
+      python-version:
+        description: "Python version to use"
+        default: "3.11"
+        type: string
+      test-script:
+        description: "Path to the Playwright test script in the external repository"
+        default: "Playwright/run_tests.py"
+        type: string
+
       BACKEND_PORT:
         required: true
       FRONTEND_PORT:
         required: true
-      python-version:
-        required: true
-      test-script:
-        required: true
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -20,15 +24,13 @@ jobs:
       BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
       FRONTEND_PORT: ${{ secrets.FRONTEND_PORT }}
     timeout-minutes: 15
+    container:
+      image: python:${{ inputs.python-version }}  # Use the Python version specified in inputs
+      options: --ipc=host  # Ensures Playwright can run in the container
 
     steps:
       - name: Checkout External Repository
         uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ inputs.python-version }}
 
       - name: Install Dependencies
         run: |
