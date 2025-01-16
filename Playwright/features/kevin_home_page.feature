@@ -6,4 +6,4 @@ Feature: Kevin Home Page Validation
 
     Examples:
       | text                                     |
-      | Ke!!! |
+      | Kevin home works! test testing!!!!!!!!!! |
