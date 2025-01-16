@@ -6,4 +6,4 @@ Feature: Pogoda Home Page Validation
 
     Examples:
       | text                                     |
-      | Pogoda home works111! |
+      | Pogo111! |
