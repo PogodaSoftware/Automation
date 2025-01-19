@@ -46,5 +46,64 @@ jobs:
           echo "PYTHONPATH=$PWD:$PYTHONPATH" >> $GITHUB_ENV
           source $GITHUB_ENV
 
-      - name: Run Playwright Tests
-        run: python "Playwright/run_tests.py"
+      - name: Run your tests
+        run: pytest --tracing=retain-on-failure
+  
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+            name: playwright-traces
+            path: test-results/
+
+
+
+# name: Docker Compose and Playwright Tests
+
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       python-version:
+#         description: "Python version to use"
+#         default: "3.11"
+#         type: string
+#       test-script:
+#         description: "Path to the Playwright test script in the external repository"
+#         default: "Playwright/run_tests.py"
+#         type: string
+#       BACKEND_PORT:
+#         required: true
+#       FRONTEND_PORT:
+#         required: true
+
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
+#     env: 
+#       BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
+#       FRONTEND_PORT: ${{ secrets.FRONTEND_PORT }}
+#     timeout-minutes: 15
+
+#     steps:
+#       - name: Checkout External Repository
+#         uses: actions/checkout@v4
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: "3.11"
+
+#       - name: Install Dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install -r requirements.txt
+
+#       - name: Ensure Browsers Are Installed
+#         run: python -m playwright install --with-deps
+
+#       - name: Set PYTHONPATH
+#         run: |
+#           echo "PYTHONPATH=$PWD:$PYTHONPATH" >> $GITHUB_ENV
+#           source $GITHUB_ENV
+
+#       - name: Run Playwright Tests
+#         run: python "Playwright/run_tests.py"
