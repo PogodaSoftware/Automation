@@ -1,6 +1,7 @@
 name: Docker Compose and Playwright Tests
 
 on:
+  push:
   workflow_dispatch:
     inputs:
       python-version:
