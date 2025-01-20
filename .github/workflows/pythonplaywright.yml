@@ -31,7 +31,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ inputs['python-version'] }}
+          python-version: "3.11"
 
       - name: Install Dependencies
         run: |
@@ -47,4 +47,4 @@ jobs:
           source $GITHUB_ENV
 
       - name: Run Playwright Tests
-        run: python ${{ inputs['test-script'] }}
+        run: python "Playwright/run_tests.py"
