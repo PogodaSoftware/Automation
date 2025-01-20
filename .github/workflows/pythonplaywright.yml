@@ -20,8 +20,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env: 
-      BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
-      FRONTEND_PORT: ${{ secrets.FRONTEND_PORT }}
+      BACKEND_PORT: ${{ inputs.BACKEND_PORT }}
+      FRONTEND_PORT: ${{ inputs.FRONTEND_PORT }}
     timeout-minutes: 15
 
     steps:
@@ -31,7 +31,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: ${{ inputs['python-version'] }}
 
       - name: Install Dependencies
         run: |
@@ -47,4 +47,4 @@ jobs:
           source $GITHUB_ENV
 
       - name: Run Playwright Tests
-        run: python "Playwright/run_tests.py"
+        run: python ${{ inputs['test-script'] }}
