@@ -3,14 +3,6 @@ name: Docker Compose and Playwright Tests
 on:
   workflow_dispatch:
     inputs:
-      python-version:
-        description: "Python version to use"
-        default: "3.11"
-        type: string
-      test-script:
-        description: "Path to the Playwright test script in the external repository"
-        default: "Playwright/run_tests.py"
-        type: string
       BACKEND_PORT:
         required: true
       FRONTEND_PORT:
@@ -20,8 +12,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env: 
-      BACKEND_PORT: ${{ inputs.BACKEND_PORT }}
-      FRONTEND_PORT: ${{ inputs.FRONTEND_PORT }}
+      BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
+      FRONTEND_PORT: ${{ secrets.FRONTEND_PORT }}
     timeout-minutes: 15
 
     steps:
@@ -47,4 +39,4 @@ jobs:
           source $GITHUB_ENV
 
       - name: Run Playwright Tests
-        run: python "Playwright/run_tests.py"
+        run: python "Playwright/run_tests.py"  
